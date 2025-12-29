@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENAA - Gestion des Absences</title>
+
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ===================== LOGIN PAGE ===================== -->
+<div id="loginPage" class="login-container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="login-card">
+        <h2 class="text-white text-center mb-4 fw-semibold">Admin</h2>
+
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    class="form-control text-white"
+                    required
+                    style="background-color: rgba(255,255,255,0.1);
+                           border: 1px solid rgba(255,255,255,0.2);
+                           padding: 12px 15px;
+                           border-radius: 8px;">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control text-white"
+                    required
+                    style="background-color: rgba(255,255,255,0.1);
+                           border: 1px solid rgba(255,255,255,0.2);
+                           padding: 12px 15px;
+                           border-radius: 8px;">
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-login text-white fw-semibold w-100 mt-3"
+                style="background-color:#2563eb; padding:12px; border-radius:8px; border:none;">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashboard" class="dashboard d-none">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="position-fixed top-0 start-0 vh-100 bg-dark" style="width:250px;">
+        <div class="sidebar-header p-3">
+            <img src="logo.png" width="225" alt="Logo ENAA">
+        </div>
+
+        <ul class="nav flex-column nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-page="statistiques">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de bord</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="etudiants">
+                    <i class="fas fa-users"></i>
+                    <span>Étudiants</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="presence">
+                    <i class="fas fa-user-check"></i>
+                    <span>Présence</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="historique">
+                    <i class="fas fa-history"></i>
+                    <span>Historique</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-auto">
+                <a class="nav-link logout-btn" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="text-danger">Déconnexion</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" style="margin-left:250px;">
+       
+        <!-- ===================== PAGE PRESENCE ===================== -->
+        <section id="pagePresence" class="page-content p-5" style="display:none;">
+            <h1 class="fs-1 fw-bold mb-4 ">Prise de Présence Quotidienne</h1>
+
+            <div class="bg-white rounded-3 p-4 shadow-sm">
+                <button id="savePresence" class="btn btn-primary mb-3 savePresence">
+                    <i class="fas fa-save" id="enregistrer_button"></i> Enregistrer la présence
+                </button>
+
+                <h6 class="text-muted">Sélectionner la date</h6>
+                <input id="date" type="date" class="form-control w-50 mb-4">
+
+                <div id="listesetudiants"></div>
+            </div>
+        </section>
+
+      
+    </main>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
