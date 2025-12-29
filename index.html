@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENAA - Gestion des Absences</title>
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashboard" class="dashboard">
+
+    <main class="main-content">
+
+        <!-- ===================== PAGE STATISTIQUES ===================== -->
+        <section id="pageStatistiques" class="page-content p-5">
+
+            <h1 class="text-dark mb-4 fw-bold">Statistiques</h1>
+
+            <!-- Cartes -->
+            <div class="cartes row g-5 ms-4 mb-4">
+                <div class="carte col-md-3 rounded-4">
+                    <h3>Taux d'absence</h3>
+                    <div class="mark d-flex justify-content-between mt-3">
+                        <p id="absence">8%</p>
+                        <img src="images/x-mark.png" alt="icon">
+                    </div>
+                </div>
+                <div class="carte col-md-3 rounded-4">
+                    <h3>Taux de retard</h3>
+                    <div class="mark d-flex justify-content-between mt-3">
+                        <p id="retard">14%</p>
+                        <img src="images/sandglass.png" alt="icon">
+                    </div>
+                </div>
+                <div class="carte col-md-3 rounded-4">
+                    <h3>Taux de présence</h3>
+                    <div class="mark d-flex justify-content-between mt-3">
+                        <p id="présence">91%</p>
+                        <img src="images/accept.png" alt="icon">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Absences -->
+            <div class="box text-white mb-4">
+                <h4>Top 3 - Plus absents</h4>
+                <table class=" table-bordered mb-0">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Étudiant</th>
+                        <th>Absences</th>
+                    </tr>
+                    </thead>
+                    <tbody id="absenceTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Top Retards -->
+            <div class="box text-white">
+                <h4>Top 3 - Plus en retard</h4>
+                <table class=" table-bordered mb-0">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Étudiant</th>
+                        <th>Retards</th>
+                    </tr>
+                    </thead>
+                    <tbody id="retardTable"></tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

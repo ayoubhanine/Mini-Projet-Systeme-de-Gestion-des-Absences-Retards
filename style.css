@@ -1,0 +1,68 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* ================= CONTENT ================= */
+.main-content {
+  margin-left: 250px;
+}
+
+/* ================= CARTES ================= */
+
+.carte{
+    background: #163a6b;
+    color: white;
+    width: 240px;
+    padding: 25px;
+    margin-right: 20px;
+    margin-left: 25px;
+}
+.carte h3{
+    margin: 0;
+    font-size: 23px;
+}
+.carte p{
+    margin: 14px 0 0;
+    font-size: 38px;
+    margin-bottom: 10px;
+    color: #31E327;
+    font-weight: 500;
+}
+
+.carte .mark{
+    background: #163a6b;
+}
+.mark img {
+margin-top: 15px;
+   width: 46px;
+   height: 46px;
+}
+.box{
+    background: #163a6b;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 20px;
+}
+
+/* ================= TABLE ================= */
+table{
+border: 1px solid #000;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+th, td{
+    padding: 10px;
+    text-align: left;
+}
+th{
+    background: #1f4f8a;
+    color: white;
+}
