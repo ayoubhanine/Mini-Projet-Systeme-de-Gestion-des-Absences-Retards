@@ -1,0 +1,259 @@
+:root {
+            --primary-dark: #1e3a5f;
+            --secondary-dark: #2c4a6f;
+            --accent: #3b5d8f;
+
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            min-height: 100vh;
+        }
+        .login-card {
+            background: var(--primary-dark);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+        } 
+        .login-card input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        .btn-login:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+        
+        .sidebar-header {
+            padding: 30px 20px;
+            background: var(--secondary-dark);
+        }
+         .nav-menu { 
+            padding: 20px 0;
+       
+
+        .nav-item {
+            padding: 0;
+            margin: 5px 15px;
+        } }
+
+        
+
+        .nav-link {
+            color: rgba(255,255,255,0.7);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 25px;
+        }
+        .student-detail {
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        body {
+  background: #f5f7fb;
+  font-family: Arial, sans-serif;
+}
+
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.menu li.active,
+.menu li:hover {
+  background: #143f7a;
+}
+
+.logout {
+  margin-top: 50px;
+  color: red;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 25px;
+}
+
+.topbar {
+  text-align: right;
+  margin-bottom: 500px;
+}
+
+.card-box {
+  background: #173b6c;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.table-box {
+  background: #173b6c;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.table i {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.form-box {
+  background: #173b6c;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  color: white;
+}
+.content{
+margin-left:290px;
+padding: 20px;
+width: 100%;
+}
+
+.carte{
+background: #163a6b;
+color: white;
+width: 240px;
+padding: 25px;
+margin-right: 20px;
+margin-left: 25px;
+}
+.carte h3{
+margin: 0;
+font-size: 23px;
+}
+.carte p{
+margin: 14px 0 0;
+font-size: 38px;
+margin-bottom: 10px;
+color: #31E327;
+font-weight: 500;
+}
+
+.carte .mark{
+background: #163a6b;
+}
+.mark img {
+margin-top: 15px;
+width: 46px;
+height: 46px;
+}
+.box{
+background: #163a6b;
+border-radius: 12px;
+padding: 15px;
+margin: 20px 20px;
+}
+
+table{
+border: 1px solid #000;
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
+border-radius: 12px;
+overflow: hidden;
+margin-top: 10px;
+}
+
+th, td{
+padding: 10px;
+text-align: left;
+}
+th{
+background: #1f4f8a;
+color: white;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 40px;
+}
+
+
+.main-wrapper {
+    background-color: #0f2f5a;
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+}
+
+
+.page-title {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+
+.page-separator {
+    height: 1px;
+    background-color: rgba(255,255,255,0.3);
+    margin: 25px 0;
+}
+
+
+.search-box {
+    max-width: 280px;
+    background-color: #ebecef !important;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    padding: 10px 15px;
+
+
+}
+
+.search-box::placeholder {
+    color: #18253b;
+}
+
+
+.card-history {
+    background: linear-gradient(135deg, #a4add7, #8291e3);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+
+.btn-details {
+    background-color: #7c3aed;
+    border: none;
+    padding: 12px 25px;
+    font-weight: bold;
+    color: white;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.btn-details:hover {
+    background-color: #6d28d9;
+    transform: scale(1.05);
+}
