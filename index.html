@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENAA - Gestion des Absences</title>
+
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ===================== LOGIN PAGE ===================== -->
+<div id="loginPage" class="login-container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="login-card">
+        <h2 class="text-white text-center mb-4 fw-semibold">Admin</h2>
+
+        <form id="loginForm">
+            <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    class="form-control text-white"
+                    required
+                    style="background-color: rgba(255,255,255,0.1);
+                           border: 1px solid rgba(255,255,255,0.2);
+                           padding: 12px 15px;
+                           border-radius: 8px;">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white fw-medium mb-2">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control text-white"
+                    required
+                    style="background-color: rgba(255,255,255,0.1);
+                           border: 1px solid rgba(255,255,255,0.2);
+                           padding: 12px 15px;
+                           border-radius: 8px;">
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-login text-white fw-semibold w-100 mt-3"
+                style="background-color:#2563eb; padding:12px; border-radius:8px; border:none;">
+                Login
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="dashboard" class="dashboard d-none">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="position-fixed top-0 start-0 vh-100 bg-dark" style="width:250px;">
+        <div class="sidebar-header p-3">
+            <img src="logo.png" width="225" alt="Logo ENAA">
+        </div>
+
+        <ul class="nav flex-column nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-page="statistiques">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de bord</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="etudiants">
+                    <i class="fas fa-users"></i>
+                    <span>Étudiants</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="presence">
+                    <i class="fas fa-user-check"></i>
+                    <span>Présence</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-page="historique">
+                    <i class="fas fa-history"></i>
+                    <span>Historique</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-auto">
+                <a class="nav-link logout-btn" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="text-danger">Déconnexion</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" style="margin-left:250px;">
+        <!-- ===================== PAGE STATISTIQUES ===================== -->
+<section id="pageStatistiques" class="page-content p-5" style="display:block;">
+
+    <h1 class="text-dark mb-4 fw-bold">Statistiques</h1>
+
+    <!-- Cartes -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="carte rounded-4 p-4">
+                <h5>Taux d'absence</h5>
+                <p id="absence" class="fs-3 fw-bold text-danger">0%</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="carte rounded-4 p-4">
+                <h5>Taux de retard</h5>
+                <p id="retard" class="fs-3 fw-bold text-warning">0%</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="carte rounded-4 p-4">
+                <h5>Taux de présence</h5>
+                <p id="presence" class="fs-3 fw-bold text-success">0%</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Absences -->
+    <div class="box text-white mb-4">
+        <h4>Top 3 - Plus absents</h4>
+        <table class="table table-dark table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Absences</th>
+                </tr>
+            </thead>
+            <tbody id="absenceTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Top Retards -->
+    <div class="box text-white">
+        <h4>Top 3 - Plus en retard</h4>
+        <table class="table table-dark table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Retards</th>
+                </tr>
+            </thead>
+            <tbody id="retardTable"></tbody>
+        </table>
+    </div>
+
+</section>
+
+
+        <!-- Top bar -->
+        <div class="top-bar d-flex justify-content-end align-items-center bg-white shadow p-3 px-4"></div>
+
+        <!-- ===================== PAGE ETUDIANTS ===================== -->
+        <section id="pageEtudiants" class="page-content p-5" style="display:none;">
+            <h1 class="fs-1 fw-bold mb-4 ">Gestion des Étudiants</h1>
+
+            <!-- Cards -->
+            <div class="row g-3 my-3">
+                <div class="col-md-4">
+                    <div class="card-box">
+                        <p>Total Étudiants</p>
+                        <h2 id="total">0</h2>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-box">
+                        <p>Étudiants Actifs</p>
+                        <h2 id="active">0</h2>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-box">
+                        <p>Étudiants Inactifs</p>
+                        <h2 id="inactive">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex justify-content-between my-3">
+                <input id="search" class="form-control w-50" placeholder="Rechercher...">
+                <button class="btn btn-primary" onclick="toggleForm()">+ Ajouter un étudiant</button>
+            </div>
+
+            <!-- Form -->
+            <div id="studentForm" class="form-box d-none">
+                <h5>Ajouter un étudiant</h5>
+                <input type="hidden" id="index">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <input id="nom" class="form-control mb-2" placeholder="Nom complet">
+                    </div>
+                    <div class="col-md-4">
+                        <input id="email" class="form-control mb-2" placeholder="Email">
+                    </div>
+                    <div class="col-md-4">
+                        <input id="groupe" class="form-control mb-2" placeholder="Groupe">
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="saveStudent()">Enregistrer</button>
+                <button class="btn btn-secondary" onclick="toggleForm()">Annuler</button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-box mt-4">
+                <table class="table table-dark table-sm">
+                    <thead>
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Email</th>
+                            <th>Groupe</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE PRESENCE ===================== -->
+        <section id="pagePresence" class="page-content p-5" style="display:none;">
+            <h1 class="fs-1 fw-bold mb-4 ">Prise de Présence Quotidienne</h1>
+
+            <div class="bg-white rounded-3 p-4 shadow-sm">
+                <button id="savePresence" class="btn btn-primary mb-3 savePresence">
+                    <i class="fas fa-save" id="enregistrer_button"></i> Enregistrer la présence
+                </button>
+
+                <h6 class="text-muted">Sélectionner la date</h6>
+                <input id="date" type="date" class="form-control w-50 mb-4">
+
+                <div id="listesetudiants"></div>
+            </div>
+        </section>
+
+        <!-- ===================== PAGE HISTORIQUE ===================== -->
+<section id="pageHistorique" class="page-content p-5" style="display:none;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="page-title">Historique des Absences & Retards</h3>
+
+        <input
+            type="text"
+            id="searchHistory"
+            class="form-control w-25"
+            placeholder="Rechercher par date..."
+        >
+    </div>
+
+    <div id="historyList"></div>
+
+    <!-- ===== DÉTAILS JOUR ===== -->
+    <div id="historyDetails" class="mt-5 d-none">
+        <h4 id="historyDateTitle"></h4>
+
+        <h5 class="text-danger mt-4">Absents</h5>
+        <div id="historyAbsents"></div>
+
+        <h5 class="text-warning mt-4">Retards</h5>
+        <div id="historyRetards"></div>
+
+        <button class="btn btn-secondary mt-4" onclick="retourHistorique()">
+            ← Retour à l'historique
+        </button>
+    </div>
+
+</section>
+
+
+    </main>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
