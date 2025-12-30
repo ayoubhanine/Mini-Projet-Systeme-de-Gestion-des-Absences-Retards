@@ -1,5 +1,6 @@
 /***** INITIALISATION*/
 let students = JSON.parse(localStorage.getItem("students")) || [];
+let presencesTemp = {};
 
 
  /* ======== GESTION DES ÉTUDIANTS ========*/
@@ -163,12 +164,15 @@ listContainer.addEventListener("click", function (e) {
   }
 
   if (e.target.classList.contains("btn-present")) {
-    student.presences.push({ date, statut: "Présent" });
-  }
+  presencesTemp[studentId] = { date, statut: "Présent" };
+  studentDiv.classList.add("border-success");
+}
 
-  if (e.target.classList.contains("btn-absent")) {
-    student.presences.push({ date, statut: "Absent" });
-  }
+if (e.target.classList.contains("btn-absent")) {
+  presencesTemp[studentId] = { date, statut: "Absent" };
+  studentDiv.classList.add("border-danger");
+}
+
 
   if (e.target.classList.contains("btn-retard")) {
     afficherFormulaireRetard(studentDiv, student, date);
@@ -205,22 +209,37 @@ function afficherFormulaireRetard(studentDiv, student, date) {
   `;
 
   retardDiv.querySelector("button").addEventListener("click", () => {
-    student.presences.push({
-      date,
-      statut: "Retard",
-      heure: retardDiv.querySelector("#heure").value,
-      motif: retardDiv.querySelector("#motif").value,
-      details: retardDiv.querySelector("#details").value
-    });
+    presencesTemp[student.id] = {
+  date,
+  statut: "Retard",
+  heure: retardDiv.querySelector("#heure").value,
+  motif: retardDiv.querySelector("#motif").value,
+  details: retardDiv.querySelector("#details").value
+};
 
-    localStorage.setItem("students", JSON.stringify(students));
-    retardDiv.remove();//Supprime le formulaire de la page
-    alert("Retard enregistré");
+retardDiv.remove();
+alert("Retard prêt à être enregistré");
+
+
+   
   });
 
   studentDiv.after(retardDiv);
 }
 
+document.getElementById("savePresence").addEventListener("click", () => {
+  for (let id in presencesTemp) {
+    const student = students.find(s => s.id == id);
+    if (student) {
+      student.presences.push(presencesTemp[id]);
+    }
+  }
+
+  localStorage.setItem("students", JSON.stringify(students));
+  presencesTemp = {}; // vider la mémoire temporaire
+
+  alert("Présences enregistrées avec succès ✅");
+});
 
  /* ======== AUTHENTIFICATION (LOGIN / LOGOUT)*/
 
@@ -382,39 +401,48 @@ function renderDashboard() {
 renderDashboard();
 
 
- /**  HISTORIQUE – ENAA (VERSION FINALE)*/
+/*  HISTORIQUE DES ABSENCES & RETARDS*/
 
-// Récupération des étudiants + présences
-students = JSON.parse(localStorage.getItem("students")) || []; // 🔥 sans 'let'
+// 🔹 Recharger les étudiants depuis le localStorage
+students = JSON.parse(localStorage.getItem("students")) || [];
 
-// Conteneurs
+// 🔹 Éléments DOM
 const historyList = document.getElementById("historyList");
-const detailsContainer = document.getElementById("detailsContainer");
-const pageTitle = document.querySelector(".page-title");
+const detailsContainer = document.getElementById("historyDetails");
 const searchInput = document.getElementById("searchHistory");
 
+const historyPageTitle = document.getElementById("historyPageTitle");
+const historyDateTitle = document.getElementById("historyDateTitle");
+const historyAbsents = document.getElementById("historyAbsents");
+const historyRetards = document.getElementById("historyRetards");
 
-/* *  Regrouper les présences par date*/
+/*  Regrouper toutes les présences par DATE */
 function getPresencesByDate() {
   const map = {};
 
   students.forEach(student => {
-    if (!student.presences) return;
+    if (!Array.isArray(student.presences)) return;
 
     student.presences.forEach(p => {
+      if (!p.date) return;
+
       if (!map[p.date]) {
-        map[p.date] = { absents: 0, retards: 0, presents: 0, details: [] };
+        map[p.date] = {
+          absents: 0,
+          retards: 0,
+          details: []
+        };
       }
 
       if (p.statut === "Absent") map[p.date].absents++;
-      else if (p.statut === "Retard") map[p.date].retards++;
-      else map[p.date].presents++;
+      if (p.statut === "Retard") map[p.date].retards++;
 
       map[p.date].details.push({
-        ...p,
         nom: student.nom,
         groupe: student.groupe,
-        id: student.id || ""
+        statut: p.statut,
+        heure: p.heure || "",
+        motif: p.motif || ""
       });
     });
   });
@@ -422,25 +450,35 @@ function getPresencesByDate() {
   return map;
 }
 
-
- /**  Afficher la liste de l’historique*/
+/*  AFFICHAGE : liste de toutes les dates */
 function renderHistory() {
-  if (!historyList) return;
-
   const data = getPresencesByDate();
   historyList.innerHTML = "";
 
-  Object.keys(data).sort().reverse().forEach(date => {
+  const dates = Object.keys(data).sort().reverse();
+
+  if (dates.length === 0) {
+    historyList.innerHTML = `
+      <p class="text-muted">Aucune présence enregistrée</p>
+    `;
+    return;
+  }
+
+  dates.forEach(date => {
     const d = data[date];
 
     historyList.innerHTML += `
-      <div class="card-history">
+      <div class="card-history mb-3 p-3 border rounded">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h5>${date}</h5>
-            <p>${d.absents} Absents | ${d.retards} Retards | ${d.presents} Présents</p>
+            <h5 class="mb-1">${date}</h5>
+            <p class="mb-0 text-muted">
+              ${d.absents} Absents |
+              ${d.retards} Retardataires
+            </p>
           </div>
-          <button class="btn-details" onclick="showDetails('${date}')">
+          <button class="btn btn-outline-primary btn-sm"
+                  onclick="showDetails('${date}')">
             Voir détails
           </button>
         </div>
@@ -449,73 +487,67 @@ function renderHistory() {
   });
 }
 
-/*  Afficher les détails d’une date */
+/* DÉTAILS D’UNE DATE
+   - Liste des absents
+   - Liste des retardataires (heure + motif)*/
 function showDetails(date) {
   const data = getPresencesByDate()[date];
-  if (!data || !detailsContainer) return;
+  if (!data) return;
 
-  pageTitle.innerText = "Détails de " + date;
+  historyPageTitle.innerText = "Détails du " + date;
+  historyDateTitle.innerText = date;
+
   historyList.style.display = "none";
-  detailsContainer.style.display = "block";
-  detailsContainer.innerHTML = "";
+  detailsContainer.classList.remove("d-none");
 
-  // Absents
-  if (data.absents > 0) {
-    detailsContainer.innerHTML += `<h4 class="text-danger">Absents (${data.absents})</h4>`;
-    data.details.filter(d => d.statut === "Absent").forEach(d => {
-      detailsContainer.innerHTML += createDetailCard(d, "danger", "Absent");
-    });
-  }
+  historyAbsents.innerHTML = "";
+  historyRetards.innerHTML = "";
 
-  // Retards
-  if (data.retards > 0) {
-    detailsContainer.innerHTML += `<h4 class="text-warning mt-4">Retards (${data.retards})</h4>`;
-    data.details.filter(d => d.statut === "Retard").forEach(d => {
-      const label = `${d.heure || ""} retard`;
-      detailsContainer.innerHTML += createDetailCard(d, "warning", label);
-    });
-  }
-
-  // Bouton retour
-  detailsContainer.innerHTML += `
-    <button class="btn btn-light mt-4" onclick="backToHistory()">
-      ← Retour à l'historique
-    </button>
-  `;
-}
-
-/*  Carte détail étudiant */
-function createDetailCard(d, color, label) {
-  const initials = d.nom.split(" ").map(n => n[0]).join("").toUpperCase();
-
-  return `
-    <div class="card-history">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-          <div class="rounded-circle bg-${color} text-white d-flex
-                      justify-content-center align-items-center"
-               style="width:50px;height:50px;font-weight:bold;">
-            ${initials}
-          </div>
-          <div class="ms-3">
-            <h5 class="mb-1">${d.nom}</h5>
-            <p class="mb-0">Groupe ${d.groupe}</p>
-          </div>
+  /* 🔴 ABSENTS */
+  const absents = data.details.filter(d => d.statut === "Absent");
+  if (absents.length > 0) {
+    absents.forEach(d => {
+      historyAbsents.innerHTML += `
+        <div class="card-history mb-2 p-3 border rounded">
+          <strong>${d.nom}</strong>
+          <span class="text-muted">(${d.groupe})</span>
         </div>
-        <span class="badge bg-${color} px-3 py-2">${label}</span>
-      </div>
-    </div>
-  `;
+      `;
+    });
+  } else {
+    historyAbsents.innerHTML = `
+      <p class="text-muted">Aucun apprenant absent</p>
+    `;
+  }
+
+  /* 🟡 RETARDATAIRES */
+  const retards = data.details.filter(d => d.statut === "Retard");
+  if (retards.length > 0) {
+    retards.forEach(d => {
+      historyRetards.innerHTML += `
+        <div class="card-history mb-2 p-3 border rounded">
+          <strong>${d.nom}</strong>
+          <span class="text-muted">(${d.groupe})</span><br>
+          ⏰ <strong>${d.heure || "—"}</strong><br>
+          📝 ${d.motif || "—"}
+        </div>
+      `;
+    });
+  } else {
+    historyRetards.innerHTML = `
+      <p class="text-muted">Aucun retard enregistré</p>
+    `;
+  }
 }
 
-/*  Retour à la liste  */
-function backToHistory() {
-  pageTitle.innerText = "Historique des Absences & Retards";
-  detailsContainer.style.display = "none";
+/* RETOUR À L’HISTORIQUE */
+function retourHistorique() {
+  historyPageTitle.innerText = "Historique des Absences & Retards";
+  detailsContainer.classList.add("d-none");
   historyList.style.display = "block";
 }
 
-/* Recherche */
+/* RECHERCHE PAR DATE */
 if (searchInput) {
   searchInput.addEventListener("input", () => {
     const value = searchInput.value.toLowerCase();
@@ -527,5 +559,5 @@ if (searchInput) {
   });
 }
 
-// Initialisation
+/*   INITIALISATION */
 renderHistory();
